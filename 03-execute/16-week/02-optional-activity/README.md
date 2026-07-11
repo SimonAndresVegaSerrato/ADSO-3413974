@@ -261,14 +261,3 @@ Administrador
 | series                                         |
 | repeticiones                                   |
 +------------------------------------------------+
-
-============================================================
-10. CONCLUSIÓN
-============================================================
-
-POWERTRACK permitirá mejorar la administración de gimnasios mediante la
-automatización de procesos relacionados con usuarios, entrenadores,
-rutinas y seguimiento del progreso físico. Esto optimizará el trabajo
-administrativo y ofrecerá una mejor experiencia a los clientes.
-
-========================= FIN =========================
