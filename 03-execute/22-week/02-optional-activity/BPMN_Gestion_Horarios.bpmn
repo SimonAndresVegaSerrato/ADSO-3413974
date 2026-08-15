@@ -1,0 +1,359 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions_GestionHorariosCompleto" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.50.1">
+  <bpmn:collaboration id="Collaboration_GestionHorarios">
+    <bpmn:participant id="Participant_Sistema" name="Sistema de Gestión de Horarios" processRef="Process_GestionHorarios" />
+  </bpmn:collaboration>
+  <bpmn:process id="Process_GestionHorarios" name="Proceso integral de gestión de horarios" isExecutable="false">
+    <bpmn:laneSet id="LaneSet">
+      <bpmn:lane id="Lane_Sistema" name="SISTEMA">
+        <bpmn:flowNodeRef>ValidarCredenciales</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayCredenciales</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CargarRol</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>MostrarModulo</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GuardarHorario</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ActualizarDatos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GenerarIndicadores</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ProcesarDocumentos</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>AplicarParametros</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Parametrizacion" name="PARAMETRIZACIÓN">
+        <bpmn:flowNodeRef>AdministrarParametros</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ActualizarParametros</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Soporte" name="ADMINISTRADOR DE SOPORTE">
+        <bpmn:flowNodeRef>GestionDocumentos</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Director" name="DIRECTOR DE CENTRO">
+        <bpmn:flowNodeRef>ConsultarIndicadores</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Coordinador" name="COORDINADOR ACADÉMICO">
+        <bpmn:flowNodeRef>GestionHorarios</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ValidarHorario</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>GatewayHorario</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>PublicarHorario</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Instructor" name="INSTRUCTOR">
+        <bpmn:flowNodeRef>GestionHorarioInstructor</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ConsultaHorarioInstructor</bpmn:flowNodeRef>
+      </bpmn:lane>
+      <bpmn:lane id="Lane_Aprendiz" name="APRENDIZ">
+        <bpmn:flowNodeRef>Start</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>Login</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ConsultaHorario</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>ConsultaResultados</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>CerrarSesion</bpmn:flowNodeRef>
+        <bpmn:flowNodeRef>End</bpmn:flowNodeRef>
+      </bpmn:lane>
+    </bpmn:laneSet>
+    <bpmn:startEvent id="Start" name="Inicio" />
+    <bpmn:userTask id="Login" name="Ingresar al sistema (Login)" />
+    <bpmn:serviceTask id="ValidarCredenciales" name="Validar credenciales" />
+    <bpmn:exclusiveGateway id="GatewayCredenciales" name="¿Credenciales válidas?" />
+    <bpmn:serviceTask id="CargarRol" name="Identificar rol y cargar permisos" />
+    <bpmn:serviceTask id="MostrarModulo" name="Mostrar módulo autorizado" />
+    <bpmn:userTask id="ConsultaHorario" name="Consultar horario" />
+    <bpmn:userTask id="ConsultaResultados" name="Consultar información disponible" />
+    <bpmn:userTask id="GestionHorarioInstructor" name="Gestionar información del horario" />
+    <bpmn:userTask id="ConsultaHorarioInstructor" name="Consultar horario" />
+    <bpmn:userTask id="GestionHorarios" name="Gestionar horarios académicos" />
+    <bpmn:userTask id="ValidarHorario" name="Revisar y validar horario" />
+    <bpmn:exclusiveGateway id="GatewayHorario" name="¿Horario válido?" />
+    <bpmn:userTask id="PublicarHorario" name="Publicar horario" />
+    <bpmn:userTask id="ConsultarIndicadores" name="Consultar indicadores" />
+    <bpmn:userTask id="GestionDocumentos" name="Gestionar documentos / soporte" />
+    <bpmn:userTask id="AdministrarParametros" name="Administrar parámetros" />
+    <bpmn:userTask id="ActualizarParametros" name="Actualizar configuración" />
+    <bpmn:serviceTask id="GuardarHorario" name="Guardar / actualizar horario" />
+    <bpmn:serviceTask id="ActualizarDatos" name="Actualizar información del sistema" />
+    <bpmn:serviceTask id="GenerarIndicadores" name="Generar indicadores" />
+    <bpmn:serviceTask id="ProcesarDocumentos" name="Procesar información de soporte" />
+    <bpmn:serviceTask id="AplicarParametros" name="Aplicar parametrización" />
+    <bpmn:userTask id="CerrarSesion" name="Cerrar sesión" />
+    <bpmn:endEvent id="End" name="Fin" />
+    <bpmn:sequenceFlow id="F01" sourceRef="Start" targetRef="Login" />
+    <bpmn:sequenceFlow id="F05" name="No" sourceRef="GatewayCredenciales" targetRef="Login" />
+    <bpmn:sequenceFlow id="F02" sourceRef="Login" targetRef="ValidarCredenciales" />
+    <bpmn:sequenceFlow id="F03" sourceRef="ValidarCredenciales" targetRef="GatewayCredenciales" />
+    <bpmn:sequenceFlow id="F04" name="Sí" sourceRef="GatewayCredenciales" targetRef="CargarRol" />
+    <bpmn:sequenceFlow id="F06" sourceRef="CargarRol" targetRef="MostrarModulo" />
+    <bpmn:sequenceFlow id="F07" sourceRef="MostrarModulo" targetRef="ConsultaHorario" />
+    <bpmn:sequenceFlow id="F10" sourceRef="MostrarModulo" targetRef="GestionHorarioInstructor" />
+    <bpmn:sequenceFlow id="F13" sourceRef="MostrarModulo" targetRef="GestionHorarios" />
+    <bpmn:sequenceFlow id="F19" sourceRef="MostrarModulo" targetRef="ConsultarIndicadores" />
+    <bpmn:sequenceFlow id="F22" sourceRef="MostrarModulo" targetRef="GestionDocumentos" />
+    <bpmn:sequenceFlow id="F25" sourceRef="MostrarModulo" targetRef="AdministrarParametros" />
+    <bpmn:sequenceFlow id="F08" sourceRef="ConsultaHorario" targetRef="ConsultaResultados" />
+    <bpmn:sequenceFlow id="F09" sourceRef="ConsultaResultados" targetRef="CerrarSesion" />
+    <bpmn:sequenceFlow id="F11" sourceRef="GestionHorarioInstructor" targetRef="ConsultaHorarioInstructor" />
+    <bpmn:sequenceFlow id="F12" sourceRef="ConsultaHorarioInstructor" targetRef="GuardarHorario" />
+    <bpmn:sequenceFlow id="F17" name="No: corregir" sourceRef="GatewayHorario" targetRef="GestionHorarios" />
+    <bpmn:sequenceFlow id="F14" sourceRef="GestionHorarios" targetRef="ValidarHorario" />
+    <bpmn:sequenceFlow id="F15" sourceRef="ValidarHorario" targetRef="GatewayHorario" />
+    <bpmn:sequenceFlow id="F16" name="Sí" sourceRef="GatewayHorario" targetRef="PublicarHorario" />
+    <bpmn:sequenceFlow id="F18" sourceRef="PublicarHorario" targetRef="GuardarHorario" />
+    <bpmn:sequenceFlow id="F20" sourceRef="ConsultarIndicadores" targetRef="GenerarIndicadores" />
+    <bpmn:sequenceFlow id="F23" sourceRef="GestionDocumentos" targetRef="ProcesarDocumentos" />
+    <bpmn:sequenceFlow id="F26" sourceRef="AdministrarParametros" targetRef="ActualizarParametros" />
+    <bpmn:sequenceFlow id="F27" sourceRef="ActualizarParametros" targetRef="AplicarParametros" />
+    <bpmn:sequenceFlow id="F29" sourceRef="GuardarHorario" targetRef="ActualizarDatos" />
+    <bpmn:sequenceFlow id="F30" sourceRef="ActualizarDatos" targetRef="CerrarSesion" />
+    <bpmn:sequenceFlow id="F21" sourceRef="GenerarIndicadores" targetRef="CerrarSesion" />
+    <bpmn:sequenceFlow id="F24" sourceRef="ProcesarDocumentos" targetRef="CerrarSesion" />
+    <bpmn:sequenceFlow id="F28" sourceRef="AplicarParametros" targetRef="CerrarSesion" />
+    <bpmn:sequenceFlow id="F31" sourceRef="CerrarSesion" targetRef="End" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="Diagram">
+    <bpmndi:BPMNPlane id="Plane" bpmnElement="Collaboration_GestionHorarios">
+      <bpmndi:BPMNShape id="Participant_di" bpmnElement="Participant_Sistema" isHorizontal="true">
+        <dc:Bounds x="155" y="65" width="2700" height="1040" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Sistema_di" bpmnElement="Lane_Sistema" isHorizontal="true">
+        <dc:Bounds x="185" y="845" width="2670" height="260" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Parametrizacion_di" bpmnElement="Lane_Parametrizacion" isHorizontal="true">
+        <dc:Bounds x="185" y="715" width="2670" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Soporte_di" bpmnElement="Lane_Soporte" isHorizontal="true">
+        <dc:Bounds x="185" y="595" width="2670" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Director_di" bpmnElement="Lane_Director" isHorizontal="true">
+        <dc:Bounds x="185" y="475" width="2670" height="120" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Coordinador_di" bpmnElement="Lane_Coordinador" isHorizontal="true">
+        <dc:Bounds x="185" y="325" width="2670" height="150" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Instructor_di" bpmnElement="Lane_Instructor" isHorizontal="true">
+        <dc:Bounds x="185" y="195" width="2670" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Lane_Aprendiz_di" bpmnElement="Lane_Aprendiz" isHorizontal="true">
+        <dc:Bounds x="185" y="65" width="2670" height="130" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Start_di" bpmnElement="Start">
+        <dc:Bounds x="235" y="110" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="240" y="146" width="26" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Login_di" bpmnElement="Login">
+        <dc:Bounds x="305" y="90" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ValidarCredenciales_di" bpmnElement="ValidarCredenciales">
+        <dc:Bounds x="485" y="895" width="140" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GatewayCredenciales_di" bpmnElement="GatewayCredenciales" isMarkerVisible="true">
+        <dc:Bounds x="685" y="910" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="675" y="960" width="71" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CargarRol_di" bpmnElement="CargarRol">
+        <dc:Bounds x="795" y="895" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="MostrarModulo_di" bpmnElement="MostrarModulo">
+        <dc:Bounds x="1025" y="895" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConsultaHorario_di" bpmnElement="ConsultaHorario">
+        <dc:Bounds x="1255" y="90" width="130" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConsultaResultados_di" bpmnElement="ConsultaResultados">
+        <dc:Bounds x="1445" y="90" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GestionHorarioInstructor_di" bpmnElement="GestionHorarioInstructor">
+        <dc:Bounds x="1255" y="220" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConsultaHorarioInstructor_di" bpmnElement="ConsultaHorarioInstructor">
+        <dc:Bounds x="1475" y="220" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GestionHorarios_di" bpmnElement="GestionHorarios">
+        <dc:Bounds x="1255" y="355" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ValidarHorario_di" bpmnElement="ValidarHorario">
+        <dc:Bounds x="1485" y="355" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GatewayHorario_di" bpmnElement="GatewayHorario" isMarkerVisible="true">
+        <dc:Bounds x="1705" y="370" width="50" height="50" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1690" y="420" width="81" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="PublicarHorario_di" bpmnElement="PublicarHorario">
+        <dc:Bounds x="1825" y="355" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ConsultarIndicadores_di" bpmnElement="ConsultarIndicadores">
+        <dc:Bounds x="1255" y="495" width="150" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GestionDocumentos_di" bpmnElement="GestionDocumentos">
+        <dc:Bounds x="1255" y="615" width="170" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AdministrarParametros_di" bpmnElement="AdministrarParametros">
+        <dc:Bounds x="1255" y="735" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ActualizarParametros_di" bpmnElement="ActualizarParametros">
+        <dc:Bounds x="1485" y="735" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GuardarHorario_di" bpmnElement="GuardarHorario">
+        <dc:Bounds x="2015" y="895" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ActualizarDatos_di" bpmnElement="ActualizarDatos">
+        <dc:Bounds x="2235" y="895" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="GenerarIndicadores_di" bpmnElement="GenerarIndicadores">
+        <dc:Bounds x="2015" y="995" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="ProcesarDocumentos_di" bpmnElement="ProcesarDocumentos">
+        <dc:Bounds x="2235" y="995" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="AplicarParametros_di" bpmnElement="AplicarParametros">
+        <dc:Bounds x="2455" y="895" width="160" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="CerrarSesion_di" bpmnElement="CerrarSesion">
+        <dc:Bounds x="2645" y="90" width="120" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="End_di" bpmnElement="End">
+        <dc:Bounds x="2795" y="112" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="2805" y="148" width="16" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="F01_di" bpmnElement="F01">
+        <di:waypoint x="271" y="128" />
+        <di:waypoint x="305" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F05_di" bpmnElement="F05">
+        <di:waypoint x="710" y="910" />
+        <di:waypoint x="710" y="65" />
+        <di:waypoint x="365" y="90" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="718" y="478" width="15" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F02_di" bpmnElement="F02">
+        <di:waypoint x="365" y="170" />
+        <di:waypoint x="555" y="895" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F03_di" bpmnElement="F03">
+        <di:waypoint x="625" y="935" />
+        <di:waypoint x="685" y="935" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F04_di" bpmnElement="F04">
+        <di:waypoint x="735" y="910" />
+        <di:waypoint x="875" y="895" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="800" y="878" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F06_di" bpmnElement="F06">
+        <di:waypoint x="955" y="935" />
+        <di:waypoint x="1025" y="935" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F07_di" bpmnElement="F07">
+        <di:waypoint x="1105" y="895" />
+        <di:waypoint x="1320" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F10_di" bpmnElement="F10">
+        <di:waypoint x="1105" y="935" />
+        <di:waypoint x="1335" y="300" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F13_di" bpmnElement="F13">
+        <di:waypoint x="1105" y="935" />
+        <di:waypoint x="1335" y="435" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F19_di" bpmnElement="F19">
+        <di:waypoint x="1105" y="935" />
+        <di:waypoint x="1330" y="575" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F22_di" bpmnElement="F22">
+        <di:waypoint x="1105" y="935" />
+        <di:waypoint x="1340" y="695" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F25_di" bpmnElement="F25">
+        <di:waypoint x="1105" y="935" />
+        <di:waypoint x="1335" y="815" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F08_di" bpmnElement="F08">
+        <di:waypoint x="1385" y="130" />
+        <di:waypoint x="1445" y="130" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F09_di" bpmnElement="F09">
+        <di:waypoint x="1595" y="130" />
+        <di:waypoint x="2705" y="90" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F11_di" bpmnElement="F11">
+        <di:waypoint x="1415" y="260" />
+        <di:waypoint x="1475" y="260" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F12_di" bpmnElement="F12">
+        <di:waypoint x="1625" y="260" />
+        <di:waypoint x="2095" y="895" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F17_di" bpmnElement="F17">
+        <di:waypoint x="1730" y="370" />
+        <di:waypoint x="1730" y="335" />
+        <di:waypoint x="1335" y="335" />
+        <di:waypoint x="1335" y="355" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1504" y="310" width="58" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F14_di" bpmnElement="F14">
+        <di:waypoint x="1415" y="395" />
+        <di:waypoint x="1485" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F15_di" bpmnElement="F15">
+        <di:waypoint x="1635" y="395" />
+        <di:waypoint x="1705" y="395" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F16_di" bpmnElement="F16">
+        <di:waypoint x="1755" y="395" />
+        <di:waypoint x="1825" y="395" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1785" y="370" width="11" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F18_di" bpmnElement="F18">
+        <di:waypoint x="1975" y="395" />
+        <di:waypoint x="2095" y="895" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F20_di" bpmnElement="F20">
+        <di:waypoint x="1405" y="535" />
+        <di:waypoint x="2095" y="995" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F23_di" bpmnElement="F23">
+        <di:waypoint x="1425" y="655" />
+        <di:waypoint x="2315" y="995" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F26_di" bpmnElement="F26">
+        <di:waypoint x="1415" y="775" />
+        <di:waypoint x="1485" y="775" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F27_di" bpmnElement="F27">
+        <di:waypoint x="1645" y="775" />
+        <di:waypoint x="2535" y="895" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F29_di" bpmnElement="F29">
+        <di:waypoint x="2175" y="935" />
+        <di:waypoint x="2235" y="935" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F30_di" bpmnElement="F30">
+        <di:waypoint x="2395" y="935" />
+        <di:waypoint x="2705" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F21_di" bpmnElement="F21">
+        <di:waypoint x="2095" y="995" />
+        <di:waypoint x="2705" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F24_di" bpmnElement="F24">
+        <di:waypoint x="2315" y="995" />
+        <di:waypoint x="2705" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F28_di" bpmnElement="F28">
+        <di:waypoint x="2535" y="895" />
+        <di:waypoint x="2705" y="170" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="F31_di" bpmnElement="F31">
+        <di:waypoint x="2765" y="130" />
+        <di:waypoint x="2795" y="130" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
